@@ -1,70 +1,6 @@
 import sys
-
-morse_dict = {
-    # Letters
-    'A': '10111', 'B': '111010101', 'C': '11101011101',
-    'D': '1110101', 'E': '1', 'F': '101011101',
-    'G': '111011101', 'H': '1010101', 'I': '101',
-    'J': '1011101110111', 'K': '111010111',
-    'L': '101110101', 'M': '1110111', 'N': '11101',
-    'O': '11101110111', 'P': '10111011101', 'Q': '1110111010111',
-    'R': '1011101', 'S': '10101', 'T': '111', 'U': '1010111',
-    'V': '101010111', 'W': '101110111', 'X': '11101010111',
-    'Y': '1110101110111', 'Z': '11101110101',
-    # Numbers
-    '1': '10111011101110111', '2': '101011101110111',
-    '3': '10101011101110111', '4': '10101010111', '5': '101010101',
-    '6': '11101010101', '7': '1110111010101', '8': '111011101110101',
-    '9': '11101110111011101', '0': '1110111011101110111'}
-
-
-def get_morse_key(val):
-    for key, value in morse_dict.items():
-        if val == value:
-            return key
-
-    return "key doesn't exist"
-
-
-def text_to_morse(morse_file, text):
-    morse_text = ''
-    text = text.upper()
-    for char in text:
-        if not char == ' ':
-            morse_text += morse_dict[char]
-            morse_text += '000' 
-        else:
-            morse_text += '0000'
-    morse_text = morse_text[:-3]
-
-    morse_file.write(morse_text)
-
-def morse_to_text(text_file, morse_code):
-    zero_count = 0
-    morse_char = ''
-    text = ''
-
-    for i, char in enumerate(morse_code):
-        print(type(i))
-        if char == '1':
-            if zero_count == 1:
-                morse_char += morse_code[i - 1]
-            if zero_count == 3:
-                text += get_morse_key(morse_char)
-                morse_char = ''
-            if zero_count == 7:
-                text += get_morse_key(morse_char)
-                text += ' '
-                morse_char = ''
-            if i == len(morse_code) - 1:
-                morse_char += char    
-                text += get_morse_key(morse_char)    
-            zero_count = 0
-            morse_char += char
-        else:
-            zero_count += 1
-
-    text_file.write(text)
+from text_functions import text_to_morse, text_to_audio
+from morse_functions import morse_to_text, morse_to_audio
 
 def main():
     file_path = sys.argv[1]
@@ -77,21 +13,25 @@ def main():
         text = text_file.read()
         # text -> morse code
         morse_file = open('out/code.morse', 'w')
-        text_to_morse(morse_file, text)
+        morse_code = text_to_morse(text)
+        morse_file.write(morse_code)
+        text_to_audio(text)
         morse_file.close()
         text_file.close()
-        # TO DO text to audio
-
+        
     elif file_extension == 'morse':
         print('TXT and Audio.\n')
         # morse -> text
         text_file = open('out/text.txt', 'w')
         morse_file = open(file_path, 'r')
         morse_code = morse_file.read()
-        morse_to_text(text_file, morse_code)
+        text = morse_to_text(morse_code)
+        text_file.write(text)
+        morse_to_audio(morse_code)
         morse_file.close()
-        text_file.close()        
-
+        text_file.close()   
+        
+        
     elif file_extension == 'wav':
         print('TXT and Morse.\n')
     else:
