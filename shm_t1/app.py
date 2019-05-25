@@ -39,7 +39,32 @@ def text_to_morse(morse_file, text):
 
     morse_file.write(morse_text)
 
-#def morse_to_text(text_file, morse_list):
+def morse_to_text(text_file, morse_code):
+    zero_count = 0
+    morse_char = ''
+    text = ''
+
+    for i, char in enumerate(morse_code):
+        print(type(i))
+        if char == '1':
+            if zero_count == 1:
+                morse_char += morse_code[i - 1]
+            if zero_count == 3:
+                text += get_morse_key(morse_char)
+                morse_char = ''
+            if zero_count == 7:
+                text += get_morse_key(morse_char)
+                text += ' '
+                morse_char = ''
+            if i == len(morse_code) - 1:
+                morse_char += char    
+                text += get_morse_key(morse_char)    
+            zero_count = 0
+            morse_char += char
+        else:
+            zero_count += 1
+
+    text_file.write(text)
 
 def main():
     file_path = sys.argv[1]
@@ -51,7 +76,7 @@ def main():
         text_file = open(file_path, 'r')
         text = text_file.read()
         # text -> morse code
-        morse_file = open('code.morse', 'w')
+        morse_file = open('out/code.morse', 'w')
         text_to_morse(morse_file, text)
         morse_file.close()
         text_file.close()
@@ -59,7 +84,13 @@ def main():
 
     elif file_extension == 'morse':
         print('TXT and Audio.\n')
-        
+        # morse -> text
+        text_file = open('out/text.txt', 'w')
+        morse_file = open(file_path, 'r')
+        morse_code = morse_file.read()
+        morse_to_text(text_file, morse_code)
+        morse_file.close()
+        text_file.close()        
 
     elif file_extension == 'wav':
         print('TXT and Morse.\n')

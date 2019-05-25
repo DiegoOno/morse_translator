@@ -1,3 +1,6 @@
-shm_t1/code.morse
-shm_t1/text.txt
-shm_t1/audio.wav
+shm_t1/data/code.morse
+shm_t1/data/text.txt
+shm_t1/out/code.morse
+shm_t1/out/text.txt
+shm_t1/data/audio.wav
+shm_t1/out/audio.wav
