@@ -18,8 +18,7 @@ def audio_to_morse(audio_path):
     frames_per_code = int(sampling_rate * duration)
     for i in range(int(frames_per_code / 2), len(loaded_wave), frames_per_code):
         generated_morse += '1' if max(loaded_wave[range(i - 10, i + 10)], key = abs) != 0 else '0'
-	
-    print(generated_morse)
+
     return generated_morse
 
 def audio_to_text(audio_path):
