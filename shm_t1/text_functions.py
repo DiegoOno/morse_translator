@@ -5,7 +5,12 @@ def text_to_morse(text):
     morse_text = ''
     text = text.upper()
     for char in text:
-        if not char == ' ':
+        
+        if morse_dict.get(char) == None and char != ' ' and char != '\n':
+            print('Caracter \"' + char + '\" eh invalido. Abortando.\n')
+            exit(1)
+
+        if char != ' ' and char != '\n':
             morse_text += morse_dict[char]
             morse_text += '000' 
         else:
