@@ -4,9 +4,15 @@ from morse_functions import morse_to_text, morse_to_audio
 from audio_functions import audio_to_morse, audio_to_text
 
 def main():
-    file_path = sys.argv[1]
-    aux = file_path.split('.')
-    file_extension = aux[len(aux) - 1]
+
+    if len(sys.argv) > 1:
+        file_path = sys.argv[1]
+        aux = file_path.split('.')
+        file_extension = aux[len(aux) - 1]
+    else:
+        print('Insira o caminho de um arquivo de entrada como parâmetro.\n')
+        print('Abortando.\n')
+        exit(1)
 
     if file_extension == 'txt':
         print('Morse and Audio.\n')
@@ -54,7 +60,6 @@ def main():
 
     else:
         print('Wrong extension.\n')
-
 
 if (__name__ == '__main__'):
     main()
